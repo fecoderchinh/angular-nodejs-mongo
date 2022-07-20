@@ -1,0 +1,53 @@
+version: '3.7'
+services:
+  mongo-db:
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - '27017:27017'
+    networks:
+      - common
+    environment:
+      - MONGO_CONNECTION:${MONGO_CONNECTION}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DATABASE=${MONGO_DATABASE}
+
+  server:
+    build: # node-express-server
+      context: ./node-express-server
+      dockerfile: ./Dockerfile
+    container_name: mean_backend
+    ports:
+      - '3000:3000'
+    links:
+      - mongo-db
+    networks:
+      - common
+
+  client:
+    build: # angular-14-app
+      context: ./angular-14-app
+      dockerfile: ./Dockerfile.prod
+    container_name: mean_frontend
+    ports:
+      - '8080:8081'
+    networks:
+      - common
+    command: npm run build
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d
+      - ./angular-14-app/dist/angular-14-app:/usr/share/nginx/html
+    depends_on:
+      - client
+    networks:
+      - common
+
+networks:
+  common:

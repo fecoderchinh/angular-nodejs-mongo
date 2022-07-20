@@ -1,0 +1,22 @@
+{
+  "name": "ng-mongo-docker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docker:build": "docker compose -f docker-compose.prod.yml build",
+    "docker:build:up": "docker compose -f docker-compose.prod.yml build && npm run docker:up",
+    "docker:rebuild": "npm run docker:clean && npm run docker:build:up",
+    "docker:up": "docker compose -f docker-compose.prod.yml up -d",
+    "docker:down": "docker compose down",
+    "docker:clean": "npm run docker:down && docker system prune -f",
+    "dev:build": "docker compose -f docker-compose.yml build",
+    "dev:build:up": "docker compose -f docker-compose.yml build && npm run dev:up",
+    "dev:rebuild": "npm run docker:clean && npm run dev:build:up",
+    "dev:up": "docker compose -f docker-compose.yml up -d"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
