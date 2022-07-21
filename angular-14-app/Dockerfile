@@ -2,9 +2,10 @@
 FROM node:18.4.0-alpine as build-step
 WORKDIR /app
 COPY package.json /app
-RUN npm install
+#RUN npm install
 RUN npm install -g @angular/cli
-COPY . /app
+RUN npm install --save-dev @angular-devkit/build-angular
+#COPY . /app
 CMD ["npm", "build"]
 # RUN npm run build
 

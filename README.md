@@ -21,3 +21,5 @@ docker kill $(docker ps -aq)
 
 #### Rebuild the docker (this will also clean the previous built)
 `npm run docker:rebuild:up` or `npm run dev:rebuild:up`
+
+#### If any problem on running docker, try to remove `package-lock.json` and run `npm i` again.
