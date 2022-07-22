@@ -10,15 +10,27 @@
 npm run docker:build
 ```
 
-#### Build and Run docker in background
-`npm run docker:build:up` or `npm run dev:build:up`
-
+#### Build and Run docker in background `development` mode
+```
+npm run dev:build:up
+```
+#### Build and Run docker in background `production` mode
+```
+npm run docker:build:up
+```
 #### Clean the Docker
 ```
 npm run docker:clean
 ```
 
-#### Rebuild the docker (this will also clean the previous built)
-`npm run docker:rebuild:up` or `npm run dev:rebuild:up`
+#### Rebuild and Run the docker (this will also clean the previous built)
+1. #### In `development` mode
+```
+npm run dev:rebuild:up
+```
+2. #### In `production` mode
+```
+npm run docker:rebuild:up
+```
 
 #### If any problem on running docker, try to remove `package-lock.json` and run `npm i` again.
