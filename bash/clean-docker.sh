@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker kill $(docker ps -aq)
+docker kill | xargs --no-run-if-empty $(docker ps -aq)
