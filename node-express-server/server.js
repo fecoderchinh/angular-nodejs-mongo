@@ -1,14 +1,17 @@
 const express = require("express");
 const cors = require("cors");
+const cookieSession = require("cookie-session");
 
 const app = express();
 
-var corsOptions = {
-    // origin: "http://localhost:8081" // for localhost
-    origin: "http://localhost:3000/api/tutorials" // for nginx
-};
-
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: [
+        'http://localhost:4200', // using api at local machine
+        'http://localhost:8080', // using api at docker (development)
+        'http://localhost' // using api at docker (run production on nginx)
+    ]
+}));
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -17,6 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
+const Role = db.role;
 db.mongoose
     .connect(db.url, {
         useNewUrlParser: true,
@@ -24,17 +28,20 @@ db.mongoose
     })
     .then(() => {
         console.log("Connected to the database!");
+        initial();
     })
     .catch(err => {
         console.log("Cannot connect to the database!", err);
         process.exit();
     });
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+app.use(
+    cookieSession({
+        name: "tr9h-session",
+        secret: "COOKIE_SECRET", // should use as secret environment variable
+        httpOnly: true
+    })
+);
 
 // simple route
 app.get("/", (req, res, next) => {
@@ -42,9 +49,48 @@ app.get("/", (req, res, next) => {
 });
 
 require("./app/routes/turorial.routes")(app);
+// routes
+require("./app/routes/auth.routes")(app);
+require("./app/routes/user.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
+
+function initial() {
+    Role.estimatedDocumentCount((err, count) => {
+        if (!err && count === 0) {
+            new Role({
+                name: "user"
+            }).save(err => {
+                if (err) {
+                    console.log("error", err);
+                }
+
+                console.log("added 'user' to roles collection");
+            });
+
+            new Role({
+                name: "moderator"
+            }).save(err => {
+                if (err) {
+                    console.log("error", err);
+                }
+
+                console.log("added 'moderator' to roles collection");
+            });
+
+            new Role({
+                name: "admin"
+            }).save(err => {
+                if (err) {
+                    console.log("error", err);
+                }
+
+                console.log("added 'admin' to roles collection");
+            });
+        }
+    });
+}

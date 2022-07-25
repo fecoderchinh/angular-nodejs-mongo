@@ -34,3 +34,7 @@ npm run docker:rebuild:up
 ```
 
 #### If any problem on running docker, try to remove `package-lock.json` and run `npm i` again.
+
+### Development
+1. If you are working on localhost, there 2 options that help you to switch.
+   1. Goto `.config/db.config.js` at `nodejs` folder and choose to comment line 5 or 6 as your favorite.

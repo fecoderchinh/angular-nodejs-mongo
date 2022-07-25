@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { TutorialService } from 'src/app/services/tutorial.service';
+import { TutorialService } from 'src/app/_services/tutorial.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Tutorial } from 'src/app/models/tutorial.model';
 

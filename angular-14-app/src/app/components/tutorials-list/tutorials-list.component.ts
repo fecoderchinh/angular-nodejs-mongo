@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Tutorial } from 'src/app/models/tutorial.model';
-import { TutorialService } from 'src/app/services/tutorial.service';
+import { TutorialService } from 'src/app/_services/tutorial.service';
 
 @Component({
   selector: 'app-tutorials-list',

@@ -7,9 +7,14 @@ import { AddTutorialComponent } from './components/add-tutorial/add-tutorial.com
 import { TutorialDetailsComponent } from './components/tutorial-details/tutorial-details.component';
 import { TutorialsListComponent } from './components/tutorials-list/tutorials-list.component';
 
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import {PathLocationStrategy , LocationStrategy} from "@angular/common";
+import { LoginComponent } from './components/login/login.component';
+import { IndexComponent } from './components/index/index.component';
+import {ToastrModule} from "ngx-toastr";
+import {httpInterceptorProviders} from "./_helpers/http.interceptor";
+import {RegisterComponent} from "./components/register/register.component";
 
 // @ts-ignore
 @NgModule({
@@ -17,15 +22,24 @@ import {PathLocationStrategy , LocationStrategy} from "@angular/common";
     AppComponent,
     AddTutorialComponent,
     TutorialDetailsComponent,
-    TutorialsListComponent
+    TutorialsListComponent,
+    LoginComponent,
+    IndexComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      positionClass: 'toast-top-center',
+      preventDuplicates: true,
+    }),
   ],
-  providers: [{provide: LocationStrategy, useClass: PathLocationStrategy }],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
